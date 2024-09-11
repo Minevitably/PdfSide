@@ -1,1 +1,5 @@
-/.idea
+/.idea/
+/main.exe
+/main.build/
+/main.dist/
+/main.onefile-build/
