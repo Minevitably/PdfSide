@@ -1,5 +1,5 @@
 /.idea/
-/src/main/python/main.build/
-/src/main/python/main.dist/
-/src/main/python/main.onefile-build/
-/src/main/python/main.exe
+/main.build/
+/main.dist/
+/main.onefile-build/
+/main.exe
