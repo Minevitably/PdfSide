@@ -18,6 +18,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
     QSizePolicy, QVBoxLayout, QWidget)
 
+from src.main.python.widgets.FileSlotWidget import FileSlotWidget
+
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
@@ -76,7 +78,7 @@ class Ui_Form(object):
 
         self.verticalLayout.addWidget(self.label_3, 0, Qt.AlignHCenter)
 
-        self.fileSlotWidget = QWidget(Form)
+        self.fileSlotWidget = FileSlotWidget(Form)
         self.fileSlotWidget.setObjectName(u"fileSlotWidget")
         self.fileSlotWidget.setStyleSheet(u"border: 1px dashed #000000;\n"
 "margin: 10px;")

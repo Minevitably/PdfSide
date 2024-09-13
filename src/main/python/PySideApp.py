@@ -9,35 +9,48 @@ from src.main.python.view.Form import Ui_Form
 class PdfSide(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
-        self.res = []
         self.setupUi(self)
         self.initSignal()
 
     def initSignal(self):
         self.browserFileBtn.clicked.connect(self.browserFileBtnClicked)
+        self.fileSlotWidget.signal.connect(self.parseXmlToFile)
 
     @Slot()
     def browserFileBtnClicked(self):
         print('browserFileBtnClicked')
         filename = QFileDialog.getOpenFileName(self)
+        self.parseXmlToFile(filename[0])
 
-        tree = ET.parse(filename[0])
+    @Slot(str)
+    def parseXmlToFile(self, filename):
+        """
+        使用ElementTree解析xml文件，将它转化为pdfdir可识别的内容
+        :param filename: xml文件路径
+        :return: None
+        """
+        tree = ET.parse(filename)
         root = tree.getroot()
 
         # 打印根节点标签
         print(f"Root element: {root.tag}")
 
-        self.recur(root)
-
-        with open(filename[0].split('.')[0] + '_new.xml', 'w') as f:
-            for i in self.res:
+        res = []
+        self.recur(root, res)
+        with open(filename.split('.')[0] + '_new.xml', 'w') as f:
+            for i in res:
                 f.write(i + '\n')
 
-        self.res = []
         print('done')
 
-    def recur(self, root):
-        # 遍历XML文件中的所有子元素
+    def recur(self, root, res):
+        """
+        遍历xml树：root
+        将节点名称为ITEM的节点存放在res中
+        :param root xml树
+        :param res list，用于存放结果
+        :return None
+        """
         for child in root:
             print(f"Tag: {child.tag}, Attributes: {child.attrib}")
             if child.tag == 'ITEM':
@@ -45,8 +58,8 @@ class PdfSide(QWidget, Ui_Form):
                 item += child.attrib.get('NAME')
                 item += ' '
                 item += child.attrib.get('PAGE')
-                self.res.append(item)
-                self.recur(child)
+                res.append(item)
+                self.recur(child, res)
 
 
 def createWindow():
